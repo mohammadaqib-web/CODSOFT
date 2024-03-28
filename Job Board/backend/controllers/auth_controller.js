@@ -28,7 +28,7 @@ const addUser = async(req,res) => {
             return res.status(400).json({message:"Error while saving user!"});
         }
 
-        return res.status(200).json({message:"User registered Successfully!"});
+        return res.status(201).json({message:"User registered Successfully!"});
     } catch (error) {
         return res.status(400).json({message:"Error Occured!"});
     }
@@ -65,7 +65,31 @@ const loginUser = async(req,res)=>{
     }
 }
 
+const editUser = async(req,res)=>{
+    const {username,email,password} = req.body;
+    const user = req.user;
+
+    try {
+        if(!username||!email||!password){
+            return res.status(400).json({message:"All fields are mandatory!"});
+        }
+
+        const findUser = await authModel.findOne({email:user.email});
+        if(!findUser){
+            return res.status(400).json({message:"User not Found!"});
+        }
+
+        const hashedPassword = await bcrypt.hash(password,16);
+
+        const updateUser = await findUser.updateOne({email,username,password:hashedPassword});
+        return res.status(200).json({message:"User updated successfully!",updated:updateUser});
+    } catch (error) {
+        return res.status(400).json({message:"Error Occurred!"});
+    }
+}
+
 module.exports = {
     addUser,
-    loginUser
+    loginUser,
+    editUser
 }

@@ -9,6 +9,7 @@ app.use(cors());
 require('./dbconnect');
 
 app.use('/api/auth',require('./routes/auth_route'));
+app.use('/api/job',require('./routes/job_route'));
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running on PORT: ${process.env.PORT}`);

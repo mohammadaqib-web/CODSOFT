@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const {ObjectId} = mongoose.Schema.Types;
 
 const authSchema = new Schema({
     username:{
@@ -17,6 +18,14 @@ const authSchema = new Schema({
     role:{
         type:String,
         required:true
+    },
+    appliedApplications:{
+        type:ObjectId,
+        ref:'jobModel'
+    },
+    jobPosted:{
+        type:ObjectId,
+        ref:'jobModel'
     }
 },{timestamps:true})
 
